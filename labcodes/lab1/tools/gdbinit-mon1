@@ -10,4 +10,3 @@ define hook-stop
   x/5i $pc  # 显示当前及后续4条指令
 end
 
-continue
