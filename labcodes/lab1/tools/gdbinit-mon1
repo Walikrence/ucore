@@ -7,6 +7,7 @@ break *0xFFFF0
 
 # 定义停止时自动显示当前指令的钩子
 define hook-stop
-  x/5i $pc  # 显示当前及后续4条指令
+# 显示当前及后续4条指令
+  x/5i $pc
 end
 
