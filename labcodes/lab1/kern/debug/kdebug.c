@@ -284,7 +284,6 @@ static __noinline uint32_t read_eip(void) {
  * */
 void print_stackframe(void) {
   /* LAB1 YOUR CODE : STEP 1 */
-  uint32_t ebp = read_ebp();
   /* (1) call read_ebp() to get the value of ebp. the type is (uint32_t);
    * (2) call read_eip() to get the value of eip. the type is (uint32_t);
    * (3) from 0 .. STACKFRAME_DEPTH
@@ -296,4 +295,11 @@ void print_stackframe(void) {
    * funciton's return addr eip  = ss:[ebp+4] the calling funciton's ebp =
    * ss:[ebp]
    */
+  uint32_t ebp = read_ebp();
+  uint32_t eip = read_eip();
+  while (eip != 0) {
+    print_debuginfo(eip);
+    eip = *(ebp + 8);
+    ebp = *(ebp + 4);
+  }
 }
