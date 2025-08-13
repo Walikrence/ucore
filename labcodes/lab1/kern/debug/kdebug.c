@@ -298,8 +298,8 @@ void print_stackframe(void) {
   uint32_t ebp = read_ebp();
   uint32_t eip = read_eip();
   while (eip != 0) {
-    print_debuginfo(eip);
-    eip = *(uint32_t *)(ebp + 8);
-    ebp = *(uint32_t *)(ebp + 4);
+    print_debuginfo(eip - 1);
+    eip = *(uint32_t *)(ebp + 4);
+    ebp = *(uint32_t *)(ebp);
   }
 }
