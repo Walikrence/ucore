@@ -4,8 +4,6 @@ target remote localhost:1234
 set architecture i8086
 # 在0xFFFF0设置断点（CPU加电后执行的第一条指令地址）
 break *0xFFFF0
-# 中断向量表中int 13h的入口地址
-break *0x004c 
 
 # 定义停止时自动显示当前指令的钩子
 define hook-stop

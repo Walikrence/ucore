@@ -227,12 +227,12 @@ debug-nox: $(UCOREIMG)
 	$(V)$(TERMINAL) -e "gdb -q -x tools/gdbinit"
 
 debug-mon1: $(UCOREIMG)
-	$(V)$(QEMU) -S -s -parallel stdio -hda $< -serial null &
+	$(V)$(QEMU) -S -s -parallel stdio -d in_asm -D $(BINDIR)/q.log -hda $< -serial null &
 	$(V)sleep 2
 	$(V)$(TERMINAL) -e "gdb -q -tui -x tools/gdbinit-mon1"
 
 debug-mon1-nox: $(UCOREIMG)
-	$(V)$(QEMU) -S -s -serial mon:stdio -hda $< -nographic &
+	$(V)$(QEMU) -S -s -serial mon:stdio -d in_asm -D $(BINDIR)/q.log -hda $< -nographic &
 	$(V)sleep 2
 	$(V)$(TERMINAL) -e "gdb -q -x tools/gdbinit-mon1"
 
