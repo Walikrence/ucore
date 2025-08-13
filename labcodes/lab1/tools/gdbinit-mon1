@@ -1,0 +1,8 @@
+# 连接到QEMU的GDB服务器（默认端口1234）
+target remote localhost:1234
+# 开启实模式调试支持（x86实模式地址解析）
+set architecture i8086
+# 在0xFFFF0设置断点（CPU加电后执行的第一条指令地址）
+break *0xFFFF0
+
+continue
