@@ -227,7 +227,7 @@ $(CC)：当前使用的编译器（可能是 gcc 或 clang）<br>
 ## 练习2：使用qemu执行并调试lab1中的软件。（要求在报告中简要写出练习过程）
 为了熟悉使用qemu和gdb进行的调试工作，我们进行如下的小练习：<br>
 
-1. 从CPU加电后执行的第一条指令开始，单步跟踪BIOS的执行。
+1. 从CPU加电后执行的第一条指令开始，单步跟踪BIOS的执行。<br>
 ```make
 debug-mon1-nox: $(UCOREIMG)
 	$(V)$(QEMU) -S -s -serial mon:stdio -hda $< -nographic &
@@ -263,9 +263,15 @@ break kern_init
 -q：安静模式启动 GDB。<br>
 -x tools/gdbinit-mon1：执行 tools/gdbinit-mon1 脚本中的 GDB 命令<br>
 
-2. 在初始化位置0x7c00设置实地址断点,测试断点正常。
+2. 在初始化位置0x7c00设置实地址断点,测试断点正常。<br>
 略<br>
-3. 从0x7c00开始跟踪代码运行,将单步跟踪反汇编得到的代码与bootasm.S和 bootblock.asm进行比较。
-略<br>
-4. 自己找一个bootloader或内核中的代码位置，设置断点并进行测试。
+3. 从0x7c00开始跟踪代码运行,将单步跟踪反汇编得到的代码与bootasm.S和 bootblock.asm进行比较。<br>
+```make
+$(V)$(QEMU) -S -s -parallel stdio -d in_asm -D $(BINDIR)/q.log -hda $< -serial null &
+```
+-d：启用 QEMU 的调试日志功能，后跟调试选项（多个选项用逗号分隔）。<br>
+in_asm：指定日志类型为 “执行的汇编指令”，QEMU 会将 CPU 执行的每一条汇编指令（包括指令地址、机器码、汇编格式）记录到日志中<br>
+-D：指定日志输出文件（全称-debugfile）。<br>
+
+4. 自己找一个bootloader或内核中的代码位置，设置断点并进行测试。<br>
 略<br>
