@@ -11,3 +11,6 @@ define hook-stop
   x/5i $pc
 end
 
+file bin/kernel
+break *0x7c00
+break kern_init
