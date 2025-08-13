@@ -78,8 +78,21 @@ $(kernel): $(KOBJS)
 	$(V)$(LD) $(LDFLAGS) -T tools/kernel.ld -o $@ $(KOBJS)
 ```
 -T tools/kernel.ld：指定链接脚本（kernel.ld），用于定义内核的内存布局（如代码段、数据段、堆、栈的地址分布）<br>
+```make
+	@$(OBJDUMP) -S $@ > $(call asmfile,kernel)
+```
+objdump -S：将内核文件反汇编，并尽可能关联源代码（方便调试时对照源码和汇编指令）<br>
+输出：反汇编文本文件（如 asm/kernel.asm），包含内核的所有汇编指令<br>
 
-
+```make
+	@$(OBJDUMP) -t $@ | $(SED) '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $(call symfile,kernel)
+```
+objdump -t：显示内核文件中的符号表（包含函数名、变量名及其地址）<br>
+$(SED) ...：通过 sed 命令过滤和清理输出：<br>
+1,/SYMBOL TABLE/d：删除 SYMBOL TABLE 之前的内容<br>
+s/ .* / /：简化符号表格式（保留地址和符号名）<br>
+/^$$/d：删除空行<br>
+输出：符号表文件（如 sym/kernel.sym），记录内核中所有符号的地址，用于调试时定位函数 / 变量位置<br>
 
 ### 链接脚本
 ```ld
