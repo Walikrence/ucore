@@ -228,6 +228,26 @@ $(CC)：当前使用的编译器（可能是 gcc 或 clang）<br>
 为了熟悉使用qemu和gdb进行的调试工作，我们进行如下的小练习：<br>
 
 1. 从CPU加电后执行的第一条指令开始，单步跟踪BIOS的执行。
+```make
+debug: $(UCOREIMG)
+	$(V)$(QEMU) -S -s -parallel stdio -hda $< -serial null &
+	$(V)sleep 2
+	$(V)$(TERMINAL) -e "gdb -q -tui -x tools/gdbinit"
+```
+gdbinit
+```gdb
+file bin/kernel
+target remote :1234
+break kern_init
+continue
+```
+
+-S：QEMU 启动后立即暂停（不自动执行），等待调试器连接后再开始运行（核心调试选项）。<br>
+-s： shorthand for -gdb tcp::1234，在 1234 端口开启 GDB 服务器，允许 GDB 远程连接。<br>
+-parallel stdio：将虚拟机的并行端口输出重定向到宿主机的标准输入输出（便于查看内核打印信息）。<br>
+-hda $<：将内核镜像文件（$(UCOREIMG)，$< 表示第一个依赖）作为虚拟机的第一个硬盘（主硬盘）。<br>
+-serial null：禁用串口输出（或重定向到null，避免干扰）。<br><br>
+暂停 2 秒，确保 QEMU 有足够时间启动并准备好 GDB 服务器，避免 GDB 连接时虚拟机尚未就绪。<br><br>
 2. 在初始化位置0x7c00设置实地址断点,测试断点正常。
 3. 从0x7c00开始跟踪代码运行,将单步跟踪反汇编得到的代码与bootasm.S和 bootblock.asm进行比较。
 4. 自己找一个bootloader或内核中的代码位置，设置断点并进行测试。
