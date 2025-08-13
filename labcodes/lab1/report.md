@@ -310,5 +310,12 @@ ljmp $PROT_MODE_CSEG, $protcseg
 然后从判断是否是合法elf文件<br>
 加载代码段和数据段到对应位置<br>
 调用函数入口<br>
+```sh
+# 看elf头
+readelf -h bin/kernel
+# 看程序头
+readelf -l bin/kernel
+```
+实际加载大小和位置和参考答案不同<br>
 
 ## 练习5：实现函数调用堆栈跟踪函数 （需要编程）
