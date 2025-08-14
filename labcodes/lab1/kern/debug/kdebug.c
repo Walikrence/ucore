@@ -297,12 +297,20 @@ void print_stackframe(void) {
    */
   uint32_t ebp = read_ebp();
   uint32_t eip = read_eip();
-  while (eip != 0) {
+  while (ebp != 0) {
     cprintf("ebp:0x%08x ", ebp);
     cprintf("eip:0x%08x ", eip);
-    cprintf("\n");
-    print_debuginfo(eip - 1);
+    cprintf("args: ");
+    uint32_t next_ebp = *(uint32_t *)(ebp);
+    uint32_t p = ebp;
+    p += 8;
+
+    while (p != next_ebp) {
+      p += 4;
+      cprintf("0x%08x ", p);
+    }
     eip = *(uint32_t *)(ebp + 4);
-    ebp = *(uint32_t *)(ebp);
+    ebp = next_ebp;
+    print_debuginfo(eip);
   }
 }
