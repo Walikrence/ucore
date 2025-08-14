@@ -331,4 +331,3 @@ void print_stackframe(void) {
     ebp = ((uint32_t *)ebp)[0];
   }
 }
-}
