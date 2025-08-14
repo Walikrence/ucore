@@ -319,3 +319,41 @@ readelf -l bin/kernel
 实际加载大小和位置和参考答案不同<br>
 
 ## 练习5：实现函数调用堆栈跟踪函数 （需要编程）
+
+```c
+void print_stackframe(void) {
+  /* LAB1 YOUR CODE : STEP 1 */
+  /* (1) call read_ebp() to get the value of ebp. the type is (uint32_t);
+   * (2) call read_eip() to get the value of eip. the type is (uint32_t);
+   * (3) from 0 .. STACKFRAME_DEPTH
+   *    (3.1) printf value of ebp, eip
+   *    (3.2) (uint32_t)calling arguments [0..4] = the contents in address
+   * (unit32_t)ebp +2 [0..4] (3.3) cprintf("\n"); (3.4) call
+   * print_debuginfo(eip-1) to print the C calling function name and line
+   * number, etc. (3.5) popup a calling stackframe NOTICE: the calling
+   * funciton's return addr eip  = ss:[ebp+4] the calling funciton's ebp =
+   * ss:[ebp]
+   */
+  uint32_t ebp = read_ebp();
+  uint32_t eip = read_eip();
+  int i, j;
+  for (i = 0; ebp != 0 && i < STACKFRAME_DEPTH; i++) {
+    cprintf("ebp:0x%08x ", ebp);
+    cprintf("eip:0x%08x ", eip);
+    uint32_t next_ebp = *(uint32_t *)(ebp);
+    uint32_t p_arg = ebp + 8;
+
+    cprintf("args: ");
+    for (j = 0; j < 4; j++) {
+      uint32_t arg = *(uint32_t *)(p_arg);
+      cprintf("0x%08x ", arg);
+      p_arg += 4;
+    }
+    cprintf("\n ");
+    print_debuginfo(eip - 1);
+
+    eip = *(uint32_t *)(ebp + 4);
+    ebp = next_ebp;
+  }
+}
+```
