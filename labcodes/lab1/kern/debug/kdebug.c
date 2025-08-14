@@ -309,6 +309,7 @@ void print_stackframe(void) {
       p += 4;
       cprintf("0x%08x ", p);
     }
+    cprintf("\n ");
     eip = *(uint32_t *)(ebp + 4);
     ebp = next_ebp;
     print_debuginfo(eip);
