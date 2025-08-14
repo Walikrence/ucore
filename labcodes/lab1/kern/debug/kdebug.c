@@ -306,12 +306,13 @@ void print_stackframe(void) {
     p += 8;
 
     while (p < next_ebp) {
-      p += 4;
       cprintf("0x%08x ", p);
+      p += 4;
     }
     cprintf("\n ");
+    print_debuginfo(eip - 1);
+
     eip = *(uint32_t *)(ebp + 4);
     ebp = next_ebp;
-    print_debuginfo(eip);
   }
 }
