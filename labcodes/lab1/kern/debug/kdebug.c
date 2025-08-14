@@ -305,7 +305,7 @@ void print_stackframe(void) {
     uint32_t p = ebp;
     p += 8;
 
-    while (p != next_ebp) {
+    while (p < next_ebp) {
       p += 4;
       cprintf("0x%08x ", p);
     }
