@@ -297,14 +297,15 @@ void print_stackframe(void) {
    */
   uint32_t ebp = read_ebp();
   uint32_t eip = read_eip();
-  for (int i = 0; ebp != 0 && i < STACKFRAME_DEPTH; i++) {
+  int i, j;
+  for (i = 0; ebp != 0 && i < STACKFRAME_DEPTH; i++) {
     cprintf("ebp:0x%08x ", ebp);
     cprintf("eip:0x%08x ", eip);
     uint32_t next_ebp = *(uint32_t *)(ebp);
     uint32_t p_arg = ebp + 8;
 
     cprintf("args: ");
-    for (int j = 0; j < 4; j++) {
+    for (j = 0; j < 4; j++) {
       uint32_t arg = *(uint32_t *)(p_arg);
       cprintf("0x%08x ", arg);
       p_arg += 4;
