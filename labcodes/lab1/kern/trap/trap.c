@@ -51,6 +51,10 @@ void idt_init(void) {
   //    idt_pd. try to find it!
   //
   extern uintptr_t __vectors[];
+  int i;
+  for (i = 0; i < 256; i++) {
+    SETGATE(idt[i], 0, KERNEL_CS, __vectors[i], 0)
+  }
 }
 
 static const char *trapname(int trapno) {
