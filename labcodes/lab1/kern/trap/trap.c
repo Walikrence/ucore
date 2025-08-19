@@ -153,6 +153,11 @@ static void trap_dispatch(struct trapframe *tf) {
       // global variable (increase it), such as ticks in kern/driver/clock.c (2)
       // Every TICK_NUM cycle, you can print some info using a funciton, such as
       // print_ticks(). (3) Too Simple? Yes, I think so!
+      ticks++;
+      if (ticks == TICK_NUM) {
+        print_ticks();
+        ticks = 0;
+      }
       break;
     case IRQ_OFFSET + IRQ_COM1:
       c = cons_getc();
