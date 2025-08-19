@@ -53,9 +53,12 @@ void idt_init(void) {
   extern uintptr_t __vectors[];
   int i;
   for (i = 0; i < 256; i++) {
-    SETGATE(idt[i], 0, KERNEL_CS, __vectors[i], 0)
+    SETGATE(idt[i], 0, GD_KTEXT, __vectors[i], DPL_KERNEL)
   }
   lidt(&idt_pd);
+
+  // set for switch from user to kernel
+  SETGATE(idt[T_SWITCH_TOK], 0, GD_KTEXT, __vectors[T_SWITCH_TOK], DPL_USER);
 }
 
 static const char *trapname(int trapno) {
