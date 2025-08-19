@@ -55,6 +55,7 @@ void idt_init(void) {
   for (i = 0; i < 256; i++) {
     SETGATE(idt[i], 0, KERNEL_CS, __vectors[i], 0)
   }
+  lidt(idt_pd);
 }
 
 static const char *trapname(int trapno) {
